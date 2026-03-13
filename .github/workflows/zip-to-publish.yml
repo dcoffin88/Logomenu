@@ -28,5 +28,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./Logomenu@dcoffin88.ca.zip
-          asset_name: tLogomenu@dcoffin88.ca.zip
+          asset_name: Logomenu@dcoffin88.ca.zip
           tag: ${{ github.ref }}
