@@ -72,22 +72,26 @@ class LogoMenuMenuButton extends PanelMenu.Button {
 
         this.menu.removeAll();
 
-        this._addItem(new MenuItem(_('About My System'), () => this._aboutThisDistro()));
+        // this._addItem(new MenuItem(_('About My System'), () => this._aboutThisDistro()));
         // this._addItem(new MenuItem(_('System Settings...'), () => this._systemPreferences()));
-        this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+        // this._addItem(new PopupMenu.PopupSeparatorMenuItem());
 
         if (!showActivitiesButton)
             this._addItem(new MenuItem(_('Activities'), () => this._overviewToggle()));
 
         this._addItem(new MenuItem(_('App Grid'), () => this._showAppGrid()));
+        this._addItem(new MenuItem(_('Files'), () => this._openNautilus()));
         this._addItem(new PopupMenu.PopupSeparatorMenuItem());
 
         if (showSoftwareCenter)
             this._addItem(new MenuItem(_('Software Center'), () => this._openSoftwareCenter()));
 
-        this._addItem(new MenuItem(_('System Monitor'), () => this._openSystemMonitor()));
+        this._addItem(new MenuItem(_('Extension Manager'), () => this._openExtensionsApp()));
+
+        this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._addItem(new MenuItem(_('Mission Center'), () => this._openSystemMonitor()));
         this._addItem(new MenuItem(_('Terminal'), () => this._openTerminal()));
-        this._addItem(new MenuItem(_('Extensions'), () => this._openExtensionsApp()));
 
         if (showForceQuit) {
             this._addItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -99,16 +103,19 @@ class LogoMenuMenuButton extends PanelMenu.Button {
             this._addItem(new MenuItem(_('Sleep'), () => this._sleep()));
             this._addItem(new MenuItem(_('Restart...'), () => this._restart()));
             this._addItem(new MenuItem(_('Shut Down...'), () => this._shutdown()));
-            this._addItem(new PopupMenu.PopupSeparatorMenuItem());
 
             if (showLockScreen)
+                this._addItem(new PopupMenu.PopupSeparatorMenuItem());
                 this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
 
-            this._addItem(new MenuItem(_('Log Out...'), () => this._logOut()));
+            // this._addItem(new MenuItem(_('Log Out...'), () => this._logOut()));
         } else if (!showPowerOptions && showLockScreen) {
             this._addItem(new PopupMenu.PopupSeparatorMenuItem());
             this._addItem(new MenuItem(_('Lock Screen'), () => this._lockScreen()));
         }
+        this._addItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._addItem(new MenuItem(_('System Update'), () => this._updateSystem()));
+        this._addItem(new MenuItem(_('About My System'), () => this._aboutThisDistro()));
     }
 
     _buttonPressEvent(actor, event) {
@@ -127,6 +134,10 @@ class LogoMenuMenuButton extends PanelMenu.Button {
         } else {
             Util.spawn(['gnome-control-center', 'info-overview']);
         }
+    }
+
+    _updateSystem() {
+        Util.spawn(['ptyxis', '--', 'bash', '-c', 'sudo dnf update -y; exec bash']);
     }
 
     _systemPreferences() {
@@ -169,6 +180,10 @@ class LogoMenuMenuButton extends PanelMenu.Button {
 
     _forceQuit() {
         new Selection.SelectionWindow();
+    }
+
+    _openNautilus() {
+        Util.spawn(['nautilus']);
     }
 
     _openTerminal() {
